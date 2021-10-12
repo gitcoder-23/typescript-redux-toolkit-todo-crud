@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { getTodos, getTodo } from '../actions/todoAction';
+import { getTodos, getTodo } from '../actions/todoAction-old';
 
 //  Coming data of API
 interface Todo {

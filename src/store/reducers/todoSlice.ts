@@ -5,6 +5,12 @@ import {
   createAsyncThunk,
 } from '@reduxjs/toolkit';
 import { RootState, AppDispatch } from '../store';
+import {
+  getTodos,
+  addTodos,
+  updateTodos,
+  deleteTodos,
+} from '../actions/todoAction';
 import axios from 'axios';
 type TodoState = 'LOADING' | 'READY' | 'ERROR';
 
@@ -27,58 +33,6 @@ const initialState: ShowTodo = {
   todoState: 'READY',
   errorMessage: '',
 };
-
-// List Todo
-export const getTodos = createAsyncThunk<
-  Todo[],
-  undefined,
-  { state: RootState }
->('getTodos', async (_, thunkAPI) => {
-  const response = await axios.get(
-    'https://jsonplaceholder.typicode.com/todos'
-  );
-  return response.data;
-});
-
-// Add Todo
-
-export const addTodos = createAsyncThunk<
-  Todo,
-  { data: Todo },
-  { state: RootState }
->('addtodos', async ({ data }) => {
-  const response = await axios.post(
-    'https://jsonplaceholder.typicode.com/todos',
-    data
-  );
-  return response.data;
-});
-
-//  update Todo
-export const updateTodos = createAsyncThunk<
-  Todo,
-  { data: Todo },
-  { state: RootState }
->('updatetodos', async ({ data }) => {
-  const response = await axios.patch(
-    `https://jsonplaceholder.typicode.com/todos/${data.id}`,
-    data
-  );
-  return response.data;
-});
-
-// Delete Todo
-
-export const deleteTodos = createAsyncThunk<
-  Todo,
-  { id: number },
-  { state: RootState }
->('deletetodos', async ({ id }) => {
-  const response = await axios.delete(
-    `https://jsonplaceholder.typicode.com/todos/${id}`
-  );
-  return response.data;
-});
 
 const todoSlice = createSlice({
   name: 'todos',

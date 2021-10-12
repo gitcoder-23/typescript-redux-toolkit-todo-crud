@@ -7,13 +7,20 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 
 // import { getTodos } from '../store/actions/todoAction';
+// import {
+//   getTodos,
+//   deleteTodos,
+//   addTodos,
+//   Todo,
+//   updateTodos,
+// } from '../store/reducers/todoSlice';
 import {
   getTodos,
   deleteTodos,
   addTodos,
   Todo,
   updateTodos,
-} from '../store/reducers/todoSlice';
+} from '../store/actions/todoAction';
 
 const TodoList: React.FC = () => {
   const [modal, setModal] = useState(false);

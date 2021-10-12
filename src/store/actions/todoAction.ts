@@ -1,6 +1,7 @@
 // to call api data
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import API from '../../api';
+import { RootState, AppDispatch } from '../store';
 export type TodoId = number;
 export interface Todo {
   userId: number;
@@ -9,22 +10,44 @@ export interface Todo {
   completed: boolean;
 }
 
-// to get all todos
-export const getTodos = createAsyncThunk<Todo[]>('todos', async () => {
+// List Todo
+export const getTodos = createAsyncThunk<
+  Todo[],
+  undefined,
+  { state: RootState }
+>('getTodos', async (_, thunkAPI) => {
   const response = await API.get('/todos');
-  console.log('response', response.data);
-
   return response.data;
 });
 
-// export async function getTodos(): Promise<Todos[]> {
-//   const response = await API.get('/todos');
-//   console.log('response', response.data);
-//   return response.data;
-// }
+// Add Todo
 
-// to get single todo data by id
-export const getTodo = createAsyncThunk('todo', async (id: number) => {
-  const response = await API.get(`/todo/${id}`);
+export const addTodos = createAsyncThunk<
+  Todo,
+  { data: Todo },
+  { state: RootState }
+>('addtodos', async ({ data }) => {
+  const response = await API.post('/todos', data);
+  return response.data;
+});
+
+//  update Todo
+export const updateTodos = createAsyncThunk<
+  Todo,
+  { data: Todo },
+  { state: RootState }
+>('updatetodos', async ({ data }) => {
+  const response = await API.patch(`/todos/${data.id}`, data);
+  return response.data;
+});
+
+// Delete Todo
+
+export const deleteTodos = createAsyncThunk<
+  Todo,
+  { id: number },
+  { state: RootState }
+>('deletetodos', async ({ id }) => {
+  const response = await API.delete(`/todos/${id}`);
   return response.data;
 });

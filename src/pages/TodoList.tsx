@@ -2,18 +2,8 @@ import React, { useEffect, useState } from 'react';
 // import { useForm } from 'react-hook-form';
 import { Formik, Form, Field } from 'formik';
 import { useAppSelector, useAppDispatch } from '../store/reducers/hooks';
-import { useSelector, useDispatch } from 'react-redux';
 
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
-
-// import { getTodos } from '../store/actions/todoAction';
-// import {
-//   getTodos,
-//   deleteTodos,
-//   addTodos,
-//   Todo,
-//   updateTodos,
-// } from '../store/reducers/todoSlice';
 import {
   getTodos,
   // getTodo,

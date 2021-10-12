@@ -1,6 +1,6 @@
 import axios from 'axios';
 import axiosRetry from 'axios-retry';
-import { apiHost } from './src/constants';
+import { apiHost } from './constants';
 
 const API = axios.create({
   baseURL: apiHost,

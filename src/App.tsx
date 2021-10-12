@@ -1,5 +1,6 @@
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import './App.css';
+import TodoList from './pages/TodoList';
 
 function App() {
   return (
@@ -8,8 +9,8 @@ function App() {
         <div className="col-12">
           <Router>
             <Switch>
-              {/* <Route exact path="/" component={Home} />
-              <Route exact path="/user/:id" component={Details} /> */}
+              <Route exact path="/" component={TodoList} />
+              {/* <Route exact path="/user/:id" component={Details} /> */}
             </Switch>
           </Router>
         </div>

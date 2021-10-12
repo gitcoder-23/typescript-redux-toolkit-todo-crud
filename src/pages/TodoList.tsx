@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+// import { useForm } from 'react-hook-form';
 import { Formik, Form, Field } from 'formik';
 import { useAppSelector, useAppDispatch } from '../store/reducers/hooks';
 import { useSelector, useDispatch } from 'react-redux';
@@ -94,51 +95,49 @@ const TodoList: React.FC = () => {
       {/* Add/Edit Modal Start */}
       <Modal isOpen={modal} toggle={toggle}>
         <ModalHeader toggle={toggle}>Modal title</ModalHeader>
-        <form>
-          <ModalBody>
-            <Formik
-              initialValues={initialValues}
-              onSubmit={(values, actions) => {
-                console.log(values);
-                const data = values;
-                if (todo?.id) {
-                  dispatch(updateTodos({ data }));
-                  actions.setSubmitting(false);
-                  setModal(false);
-                } else {
-                  dispatch(addTodos({ data }));
-                  actions.setSubmitting(false);
-                  setModal(false);
-                }
-              }}
-            >
-              {({ handleSubmit, handleChange, handleBlur, values, errors }) => (
-                <Form onSubmit={handleSubmit}>
-                  <label htmlFor="title">Title:</label>{' '}
-                  <Field
-                    id="title"
-                    name="title"
-                    placeholder="Title"
-                    value={values.title}
-                    onChange={handleChange}
-                  />{' '}
-                  <label htmlFor="title">Completed:</label>{' '}
-                  <Field
-                    type="checkbox"
-                    id="completed"
-                    name="completed"
-                    onChange={handleChange}
-                  />
-                  <br />
-                  <br />{' '}
-                  <button type="submit" className="btn btn-primary mt-2">
-                    Submit
-                  </button>
-                </Form>
-              )}
-            </Formik>
-          </ModalBody>
-        </form>
+        <ModalBody>
+          <Formik
+            initialValues={initialValues}
+            onSubmit={(values, actions) => {
+              console.log(values);
+              const data = values;
+              if (todo?.id) {
+                dispatch(updateTodos({ data }));
+                actions.setSubmitting(false);
+                setModal(false);
+              } else {
+                dispatch(addTodos({ data }));
+                actions.setSubmitting(false);
+                setModal(false);
+              }
+            }}
+          >
+            {({ handleSubmit, handleChange, handleBlur, values, errors }) => (
+              <Form onSubmit={handleSubmit}>
+                <label htmlFor="title">Title:</label>{' '}
+                <Field
+                  id="title"
+                  name="title"
+                  placeholder="Title"
+                  value={values.title}
+                  onChange={handleChange}
+                />{' '}
+                <label htmlFor="title">Completed:</label>{' '}
+                <Field
+                  type="checkbox"
+                  id="completed"
+                  name="completed"
+                  onChange={handleChange}
+                />
+                <br />
+                <br />{' '}
+                <button type="submit" className="btn btn-primary mt-2">
+                  Submit
+                </button>
+              </Form>
+            )}
+          </Formik>
+        </ModalBody>
       </Modal>
       {/* Add/Edit Modal End */}
     </div>

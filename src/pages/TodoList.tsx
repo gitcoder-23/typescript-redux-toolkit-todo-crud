@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-// import { useForm } from 'react-hook-form';
 import { Formik, Form, Field } from 'formik';
 import { useAppSelector, useAppDispatch } from '../store/reducers/hooks';
 
@@ -16,22 +15,22 @@ import API from '../api';
 
 const TodoList: React.FC = () => {
   const [modal, setModal] = useState(false);
-  const [openModal, setOpenModal] = useState(false);
+  const [openViewModal, setViewOpenModal] = useState(false);
   const [viewTodoData, setViewTodoData] = useState<Todo>();
   const [todo, setTodo] = useState<Todo>();
   const toggle = () => setModal(!modal);
-  const viewToggle = () => setOpenModal(!openModal);
+  const viewToggle = () => setViewOpenModal(!openViewModal);
   const dispatch = useAppDispatch();
   const todosList = useAppSelector((state) => state.todos.todositem);
   // const singleTodo = useAppSelector((state) => state.todos.todoItem);
   // console.log('singleTodo', singleTodo);
 
   const cancelClick = () => {
-    setOpenModal(false);
+    setModal(false);
   };
 
   const viewCancelClick = () => {
-    setOpenModal(false);
+    setViewOpenModal(false);
   };
 
   const viewTodo = async (id: number) => {
@@ -39,7 +38,7 @@ const TodoList: React.FC = () => {
     // dispatch(getTodo(id));
     try {
       const todoSingle = await API.get(`/todos/${id}`);
-      setOpenModal(true);
+      setViewOpenModal(true);
       setViewTodoData(todoSingle.data);
     } catch (error) {
       console.log(error);
@@ -124,7 +123,7 @@ const TodoList: React.FC = () => {
         </tbody>
       </table>
       {/* Add/Edit Modal Start */}
-      <Modal isOpen={openModal} toggle={toggle}>
+      <Modal isOpen={modal} toggle={toggle}>
         <ModalHeader toggle={toggle}>Modal title</ModalHeader>
 
         <Formik
@@ -178,7 +177,7 @@ const TodoList: React.FC = () => {
       </Modal>
       {/* Add/Edit Modal End */}
       {/* View Modal Start */}
-      <Modal isOpen={openModal} toggle={viewToggle}>
+      <Modal isOpen={openViewModal} toggle={viewToggle}>
         <ModalHeader toggle={viewToggle}>View Todo</ModalHeader>
 
         <ModalBody>

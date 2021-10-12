@@ -1,17 +1,11 @@
-import {
-  createSlice,
-  PayloadAction,
-  createSelector,
-  createAsyncThunk,
-} from '@reduxjs/toolkit';
-import { RootState, AppDispatch } from '../store';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import {
   getTodos,
+  // getTodo,
   addTodos,
   updateTodos,
   deleteTodos,
 } from '../actions/todoAction';
-import axios from 'axios';
 type TodoState = 'LOADING' | 'READY' | 'ERROR';
 
 //  Coming data of API
@@ -24,12 +18,14 @@ export interface Todo {
 
 export interface ShowTodo {
   todositem: Todo[];
+  todoItem: Todo;
   todoState: TodoState;
   errorMessage: string;
 }
 
 const initialState: ShowTodo = {
   todositem: [],
+  todoItem: {} as Todo,
   todoState: 'READY',
   errorMessage: '',
 };
@@ -56,6 +52,18 @@ const todoSlice = createSlice({
       state.todoState = 'ERROR';
       state.errorMessage = action.error.message || '';
     });
+
+    // get Todo
+    // builder.addCase(getTodo.pending, (state, action) => {
+    //   state.todoState = 'LOADING';
+    // });
+    // builder.addCase(getTodo.fulfilled, (state, action: PayloadAction<Todo>) => {
+    //   state.todoItem = action.payload;
+    // });
+    // builder.addCase(getTodo.rejected, (state, action) => {
+    //   state.todoState = 'ERROR';
+    //   state.errorMessage = action.error.message || '';
+    // });
 
     // Add Todos
 

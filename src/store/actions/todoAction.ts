@@ -1,5 +1,6 @@
 // to call api data
 import { createAsyncThunk } from '@reduxjs/toolkit';
+import axios from 'axios';
 import API from '../../api';
 import { RootState, AppDispatch } from '../store';
 export type TodoId = number;
@@ -19,6 +20,25 @@ export const getTodos = createAsyncThunk<
   const response = await API.get('/todos');
   return response.data;
 });
+
+// Single Todo
+// export const getTodo = createAsyncThunk<
+//   Todo,
+//   { id: number },
+//   { state: RootState }
+// >('todo', async (id) => {
+//   const response = await API.get(`/todo/${id}`);
+//   return response.data;
+// });
+
+// export const getTodo = createAsyncThunk<
+//   Todo,
+//   { id: number },
+//   { state: RootState }
+// >('getTodo', async ({ id }) => {
+//   const response = await API.get(`/todos/${id}`);
+//   return response.data;
+// });
 
 // Add Todo
 
@@ -49,5 +69,6 @@ export const deleteTodos = createAsyncThunk<
   { state: RootState }
 >('deletetodos', async ({ id }) => {
   const response = await API.delete(`/todos/${id}`);
+  console.log('response', response);
   return response.data;
 });

@@ -16,23 +16,50 @@ import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 // } from '../store/reducers/todoSlice';
 import {
   getTodos,
+  // getTodo,
   deleteTodos,
   addTodos,
   Todo,
   updateTodos,
 } from '../store/actions/todoAction';
+import API from '../api';
 
 const TodoList: React.FC = () => {
   const [modal, setModal] = useState(false);
+  const [openModal, setOpenModal] = useState(false);
+  const [viewTodoData, setViewTodoData] = useState<Todo>();
   const [todo, setTodo] = useState<Todo>();
   const toggle = () => setModal(!modal);
+  const viewToggle = () => setOpenModal(!openModal);
   const dispatch = useAppDispatch();
   const todosList = useAppSelector((state) => state.todos.todositem);
-  // console.log('todosList', todosList);
+  // const singleTodo = useAppSelector((state) => state.todos.todoItem);
+  // console.log('singleTodo', singleTodo);
+
+  const cancelClick = () => {
+    setOpenModal(false);
+  };
+
+  const viewCancelClick = () => {
+    setOpenModal(false);
+  };
+
+  const viewTodo = async (id: number) => {
+    setModal(false);
+    // dispatch(getTodo(id));
+    try {
+      const todoSingle = await API.get(`/todos/${id}`);
+      setOpenModal(true);
+      setViewTodoData(todoSingle.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const deleteTodoItem = (id: number) => {
     if (window.confirm('Do you want to delete?')) {
-      deleteTodos({ id });
+      dispatch(deleteTodos({ id }));
+      dispatch(getTodos());
     }
   };
 
@@ -51,6 +78,9 @@ const TodoList: React.FC = () => {
     // api data called
     dispatch(getTodos());
   }, []);
+  const handleReset = (resetForm: any) => {
+    resetForm();
+  };
   return (
     <div>
       <button onClick={toggle}>Add Todo</button>&nbsp;
@@ -84,6 +114,10 @@ const TodoList: React.FC = () => {
                     )}
                   </td>
                   <td>
+                    <button type="button" onClick={() => viewTodo(todoData.id)}>
+                      View
+                    </button>
+                    &nbsp;
                     <button type="button" onClick={() => editTodo(todoData)}>
                       Edit
                     </button>
@@ -100,8 +134,9 @@ const TodoList: React.FC = () => {
         </tbody>
       </table>
       {/* Add/Edit Modal Start */}
-      <Modal isOpen={modal} toggle={toggle}>
+      <Modal isOpen={openModal} toggle={toggle}>
         <ModalHeader toggle={toggle}>Modal title</ModalHeader>
+
         <Formik
           initialValues={initialValues}
           onSubmit={(values, actions) => {
@@ -109,10 +144,12 @@ const TodoList: React.FC = () => {
             const data = values;
             if (todo?.id) {
               dispatch(updateTodos({ data }));
+              handleReset.bind(null, (values.title = ''));
               actions.setSubmitting(false);
               setModal(false);
             } else {
               dispatch(addTodos({ data }));
+              handleReset.bind(null, (values.title = ''));
               actions.setSubmitting(false);
               setModal(false);
             }
@@ -141,7 +178,7 @@ const TodoList: React.FC = () => {
                 <Button color="primary" type="submit">
                   {todo?.id ? 'Edit' : 'Add'}
                 </Button>{' '}
-                <Button color="secondary" onClick={toggle}>
+                <Button color="secondary" onClick={cancelClick}>
                   Cancel
                 </Button>
               </ModalFooter>
@@ -150,6 +187,30 @@ const TodoList: React.FC = () => {
         </Formik>
       </Modal>
       {/* Add/Edit Modal End */}
+      {/* View Modal Start */}
+      <Modal isOpen={openModal} toggle={viewToggle}>
+        <ModalHeader toggle={viewToggle}>View Todo</ModalHeader>
+
+        <ModalBody>
+          <h4>Title: {viewTodoData?.title}</h4>
+
+          <strong>
+            Completed:{' '}
+            {viewTodoData?.completed == true ? (
+              <span style={{ color: 'green' }}>Yes</span>
+            ) : (
+              <span style={{ color: 'red' }}>No</span>
+            )}
+          </strong>
+        </ModalBody>
+
+        <ModalFooter>
+          <Button color="secondary" onClick={viewCancelClick}>
+            Close
+          </Button>
+        </ModalFooter>
+      </Modal>
+      {/* View Modal End */}
     </div>
   );
 };

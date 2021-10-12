@@ -95,25 +95,25 @@ const TodoList: React.FC = () => {
       {/* Add/Edit Modal Start */}
       <Modal isOpen={modal} toggle={toggle}>
         <ModalHeader toggle={toggle}>Modal title</ModalHeader>
-        <ModalBody>
-          <Formik
-            initialValues={initialValues}
-            onSubmit={(values, actions) => {
-              console.log(values);
-              const data = values;
-              if (todo?.id) {
-                dispatch(updateTodos({ data }));
-                actions.setSubmitting(false);
-                setModal(false);
-              } else {
-                dispatch(addTodos({ data }));
-                actions.setSubmitting(false);
-                setModal(false);
-              }
-            }}
-          >
-            {({ handleSubmit, handleChange, handleBlur, values, errors }) => (
-              <Form onSubmit={handleSubmit}>
+        <Formik
+          initialValues={initialValues}
+          onSubmit={(values, actions) => {
+            console.log(values);
+            const data = values;
+            if (todo?.id) {
+              dispatch(updateTodos({ data }));
+              actions.setSubmitting(false);
+              setModal(false);
+            } else {
+              dispatch(addTodos({ data }));
+              actions.setSubmitting(false);
+              setModal(false);
+            }
+          }}
+        >
+          {({ handleSubmit, handleChange, handleBlur, values, errors }) => (
+            <Form onSubmit={handleSubmit}>
+              <ModalBody>
                 <label htmlFor="title">Title:</label>{' '}
                 <Field
                   id="title"
@@ -129,15 +129,18 @@ const TodoList: React.FC = () => {
                   name="completed"
                   onChange={handleChange}
                 />
-                <br />
-                <br />{' '}
-                <button type="submit" className="btn btn-primary mt-2">
-                  Submit
-                </button>
-              </Form>
-            )}
-          </Formik>
-        </ModalBody>
+              </ModalBody>
+              <ModalFooter>
+                <Button color="primary" type="submit">
+                  {todo?.id ? 'Edit' : 'Add'}
+                </Button>{' '}
+                <Button color="secondary" onClick={toggle}>
+                  Cancel
+                </Button>
+              </ModalFooter>
+            </Form>
+          )}
+        </Formik>
       </Modal>
       {/* Add/Edit Modal End */}
     </div>

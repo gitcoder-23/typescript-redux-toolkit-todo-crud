@@ -5,10 +5,11 @@ import { useAppSelector, useAppDispatch } from '../store/reducers/hooks';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import {
   getTodos,
-  // getTodo,
+  getTodo,
   deleteTodos,
   addTodos,
   Todo,
+  TodoId,
   updateTodos,
 } from '../store/actions/todoAction';
 import API from '../api';
@@ -22,8 +23,8 @@ const TodoList: React.FC = () => {
   const viewToggle = () => setViewOpenModal(!openViewModal);
   const dispatch = useAppDispatch();
   const todosList = useAppSelector((state) => state.todos.todositem);
-  // const singleTodo = useAppSelector((state) => state.todos.todoItem);
-  // console.log('singleTodo', singleTodo);
+  const singleTodo = useAppSelector((state) => state.todos.todoItem);
+  console.log('singleTodo', singleTodo);
 
   const cancelClick = () => {
     setModal(false);
@@ -33,16 +34,18 @@ const TodoList: React.FC = () => {
     setViewOpenModal(false);
   };
 
-  const viewTodo = async (id: number) => {
+  const viewTodo = async (todoData: Todo) => {
     setModal(false);
-    // dispatch(getTodo(id));
-    try {
-      const todoSingle = await API.get(`/todos/${id}`);
-      setViewOpenModal(true);
-      setViewTodoData(todoSingle.data);
-    } catch (error) {
-      console.log(error);
-    }
+    setViewOpenModal(true);
+    // dispatch(getTodo(todoData));
+    setTodo(todoData);
+    // try {
+    //   const todoSingle = await API.get(`/todos/${id}`);
+    //   setViewOpenModal(true);
+    //   setViewTodoData(todoSingle.data);
+    // } catch (error) {
+    //   console.log(error);
+    // }
   };
 
   const deleteTodoItem = (id: number) => {
@@ -103,7 +106,10 @@ const TodoList: React.FC = () => {
                     )}
                   </td>
                   <td>
-                    <button type="button" onClick={() => viewTodo(todoData.id)}>
+                    {/* <button type="button" onClick={() => viewTodo(todoData.id)}>
+                      View
+                    </button> */}
+                    <button type="button" onClick={() => viewTodo(todoData)}>
                       View
                     </button>
                     &nbsp;
@@ -180,12 +186,36 @@ const TodoList: React.FC = () => {
       <Modal isOpen={openViewModal} toggle={viewToggle}>
         <ModalHeader toggle={viewToggle}>View Todo</ModalHeader>
 
-        <ModalBody>
+        {/* <ModalBody>
           <h4>Title: {viewTodoData?.title}</h4>
 
           <strong>
             Completed:{' '}
             {viewTodoData?.completed == true ? (
+              <span style={{ color: 'green' }}>Yes</span>
+            ) : (
+              <span style={{ color: 'red' }}>No</span>
+            )}
+          </strong>
+        </ModalBody> */}
+        {/* <ModalBody>
+          <h4>Title: {singleTodo?.title}</h4>
+
+          <strong>
+            Completed:{' '}
+            {singleTodo?.completed == true ? (
+              <span style={{ color: 'green' }}>Yes</span>
+            ) : (
+              <span style={{ color: 'red' }}>No</span>
+            )}
+          </strong>
+        </ModalBody> */}
+        <ModalBody>
+          <h4>Title: {todo?.title}</h4>
+
+          <strong>
+            Completed:{' '}
+            {todo?.completed == true ? (
               <span style={{ color: 'green' }}>Yes</span>
             ) : (
               <span style={{ color: 'red' }}>No</span>

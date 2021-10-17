@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import {
   getTodos,
-  // getTodo,
+  getTodo,
   addTodos,
   updateTodos,
   deleteTodos,
@@ -53,17 +53,30 @@ const todoSlice = createSlice({
       state.errorMessage = action.error.message || '';
     });
 
-    // get Todo
-    // builder.addCase(getTodo.pending, (state, action) => {
-    //   state.todoState = 'LOADING';
-    // });
-    // builder.addCase(getTodo.fulfilled, (state, action: PayloadAction<Todo>) => {
-    //   state.todoItem = action.payload;
-    // });
-    // builder.addCase(getTodo.rejected, (state, action) => {
-    //   state.todoState = 'ERROR';
-    //   state.errorMessage = action.error.message || '';
-    // });
+    // get single Todo
+    builder.addCase(getTodo.pending, (state, action) => {
+      state.todoState = 'LOADING';
+    });
+    builder.addCase(getTodo.fulfilled, (state, action: PayloadAction<Todo>) => {
+      state.todoItem = action.payload;
+    });
+    builder.addCase(getTodo.rejected, (state, action) => {
+      state.todoState = 'ERROR';
+      state.errorMessage = action.error.message || '';
+    });
+
+    // builder.addCase(
+    //   getTodo.fulfilled,
+    //   (state, action: PayloadAction<{ id: number }>) => {
+    //     const index = state.todositem.findIndex(
+    //       (tData) => tData.id === action.payload.id
+    //     );
+    //     state.todositem[index] = {
+    //       ...state.todositem[index],
+    //       ...action.payload,
+    //     };
+    //   }
+    // );
 
     // Add Todos
 

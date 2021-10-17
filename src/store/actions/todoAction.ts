@@ -31,14 +31,17 @@ export const getTodos = createAsyncThunk<
 //   return response.data;
 // });
 
-// export const getTodo = createAsyncThunk<
-//   Todo,
-//   { id: number },
-//   { state: RootState }
-// >('getTodo', async ({ id }) => {
-//   const response = await API.get(`/todos/${id}`);
-//   return response.data;
-// });
+export const getTodo = createAsyncThunk<
+  Todo,
+  // { data: Todo },
+  { id: number },
+  { state: RootState }
+>('getsingletodo', async ({ id }) => {
+  const response = await API.get(`/todos/${id}`);
+  console.log('getsingletodo', response);
+
+  return response.data;
+});
 
 // Add Todo
 
